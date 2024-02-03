@@ -58,7 +58,7 @@ model Profile {
   profileCategory profileCategory[]
 }
 
-model category {
+model Category {
   id              Int               @id @unique @default(autoincrement())
   catName         String
   profileCategory profileCategory[]
@@ -67,7 +67,7 @@ model category {
 model profileCategory {
   id         Int      @id @unique @default(autoincrement())
   catId      Int
-  catRef     category @relation(fields: [catId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  catRef     Category @relation(fields: [catId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   profileId  Int
   profileRef Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

@@ -17,15 +17,41 @@ export const createProfile = async (req: Request, res: Response) => {
   }
 };
 
+export const createProfileCategory = async (req: Request, res: Response) => {
+  const { profileId, catId } = req.body;
+  try {
+    await prisma.profileCategory.create({
+      data: {
+        catId,
+        profileId,
+      },
+    });
+    const category = await prisma.category.findUnique({
+      where: {
+        id: catId,
+      },
+      select:{
+        catName:true
+      }
+    });
+    return res
+      .status(200)
+      .json({ message: "Categoray Added", category: category });
+  } catch (error) {
+    logger.error(error);
+    return res.status(500).json({ message: "server error" });
+  }
+};
+
 export const createProfilePlatform = async (req: Request, res: Response) => {
-  const { platformName, profileLink, userId } = req.body;
+  const { platformName, profileLink, profileId } = req.body;
 
   try {
     const profilePlatform = await prisma.profilePlatform.create({
       data: {
         platformName,
         profileLink,
-        userId,
+        profileId,
       },
     });
     return res
@@ -34,6 +60,24 @@ export const createProfilePlatform = async (req: Request, res: Response) => {
   } catch (error) {
     logger.error(error);
     return res.status(500).json({ message: "ERROR OCCURED" });
+  }
+};
+
+export const createPackage = async (req: Request, res: Response) => {
+  const { pkgTitle, pkgPrice, platformName, profileId } = req.body;
+  try {
+    const pkg = await prisma.package.create({
+      data: {
+        pkgTitle,
+        pkgPrice,
+        platformName,
+        profileId,
+      },
+    });
+    return res.status(200).json({ messgae: "package created", pkg });
+  } catch (error) {
+    logger.error(error);
+    return res.status(500).json({ message: "server error" });
   }
 };
 
@@ -72,72 +116,50 @@ export const updateProfile = async (req: Request, res: Response) => {
   }
 };
 
-export const createPackage = async (req: Request, res: Response) => {
-  const { pkgTitle, pkgPrice, platformName, userId } = req.body;
-  try {
-    const gig = await prisma.package.create({
-      data: {
-        pkgTitle,
-        pkgPrice,
-        platformName,
-        userId,
-      },
-    });
-    return res.status(200).json({ messgae: "package created", gig });
-  } catch (error) {
-    logger.error(error);
-    return res.status(500).json({ message: "server error" });
-  }
-};
 
 //PUBLIC PROFILE LISTING
 
-export const getProfilesList = async (req: Request, res: Response) => {
-  try {
-    const userList = await prisma.appUser.findMany({
-      where: {
-        userType: "seller",
-      },
-      select: {
-        id: true,
-        firstName: true,
-        lastName: true,
-        username: true,
+// export const getProfilesList = async (req: Request, res: Response) => {
+//   try {
+//     const userList = await prisma.appUser.findMany({
+//       where: {
+//         userType: "seller",
+//       },
+//       select: {
+//         id: true,
+//         firstName: true,
+//         lastName: true,
+//         username: true,
 
-        Profile: {
-          where:{
-            category: '',
-          },
-          select: {
-            id: true,
-            avatar: true,
-            tagLine: true,
-            city: true,
-            country: true,
-            category: true,
-          },
-        },
-        profilePlatform: {
-          
-          select: {
-            id: true,
-            platformName: true,
-            profileLink: true,
-          },
-        },
+//         Profile: {
+//                     select: {
+//             id: true,
+//             avatar: true,
+//             tagLine: true,
+//             city: true,
+//             country: true,
+//           },
+//         },
+//         profilePlatform: {
+//           select: {
+//             id: true,
+//             platformName: true,
+//             profileLink: true,
+//           },
+//         },
 
-        Package: {
-          select:{
-            id:true,
-            pkgPrice:true
-          }
-        },
-      },
-    });
-    // console.log(userList)
-    return res.status(200).json({ userList });
-  } catch (error) {
-    console.log("error");
-    return res.status(500).json({ error });
-  }
-};
+//         Package: {
+//           select: {
+//             id: true,
+//             pkgPrice: true,
+//           },
+//         },
+//       },
+//     });
+//     // console.log(userList)
+//     return res.status(200).json({ userList });
+//   } catch (error) {
+//     console.log("error");
+//     return res.status(500).json({ error });
+//   }
+// };
