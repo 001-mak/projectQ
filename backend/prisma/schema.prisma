@@ -60,7 +60,7 @@ model Profile {
 
 model Category {
   id              Int               @id @unique @default(autoincrement())
-  catName         String
+  catName         String            @unique
   profileCategory profileCategory[]
 }
 

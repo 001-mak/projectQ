@@ -120,6 +120,9 @@ CREATE UNIQUE INDEX "Profile_userId_key" ON "Profile"("userId");
 CREATE UNIQUE INDEX "Category_id_key" ON "Category"("id");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Category_catName_key" ON "Category"("catName");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "profileCategory_id_key" ON "profileCategory"("id");
 
 -- CreateIndex

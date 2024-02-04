@@ -30,9 +30,9 @@ export const createProfileCategory = async (req: Request, res: Response) => {
       where: {
         id: catId,
       },
-      select:{
-        catName:true
-      }
+      select: {
+        catName: true,
+      },
     });
     return res
       .status(200)
@@ -116,50 +116,63 @@ export const updateProfile = async (req: Request, res: Response) => {
   }
 };
 
-
 //PUBLIC PROFILE LISTING
 
-// export const getProfilesList = async (req: Request, res: Response) => {
-//   try {
-//     const userList = await prisma.appUser.findMany({
-//       where: {
-//         userType: "seller",
-//       },
-//       select: {
-//         id: true,
-//         firstName: true,
-//         lastName: true,
-//         username: true,
+export const getProfilesList = async (req: Request, res: Response) => {
+  try {
+    const userList = await prisma.appUser.findMany({
+      where: {
+        userType: "seller",
+        Profile: {
+          isNot: null,
+        },
+      },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        username: true,
 
-//         Profile: {
-//                     select: {
-//             id: true,
-//             avatar: true,
-//             tagLine: true,
-//             city: true,
-//             country: true,
-//           },
-//         },
-//         profilePlatform: {
-//           select: {
-//             id: true,
-//             platformName: true,
-//             profileLink: true,
-//           },
-//         },
+        Profile: {
+          where: {
+            profilePlatform: {
+              none: {
+                id: {
+                  lt:0
+                }
+              },
+            },
+          },
+          select: {
+            id: true,
+            avatar: true,
+            tagLine: true,
+            city: true,
+            country: true,
 
-//         Package: {
-//           select: {
-//             id: true,
-//             pkgPrice: true,
-//           },
-//         },
-//       },
-//     });
-//     // console.log(userList)
-//     return res.status(200).json({ userList });
-//   } catch (error) {
-//     console.log("error");
-//     return res.status(500).json({ error });
-//   }
-// };
+            profilePlatform: {
+              where: {
+                platformName: "Instagram",
+              },
+              select: {
+                id: true,
+                platformName: true,
+                profileLink: true,
+              },
+            },
+            profileCategory: {
+              select: {
+                id: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    console.log(userList);
+    return res.status(200).json({ userList });
+  } catch (error) {
+    console.log("error");
+    return res.status(500).json({ error });
+  }
+};
