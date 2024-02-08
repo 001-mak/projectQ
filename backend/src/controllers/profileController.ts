@@ -18,25 +18,15 @@ export const createProfile = async (req: Request, res: Response) => {
 };
 
 export const createProfileCategory = async (req: Request, res: Response) => {
-  const { profileId, catId } = req.body;
+  const { profileId, category } = req.body;
   try {
-    await prisma.profileCategory.create({
+    const profileCategory = await prisma.profileCategory.create({
       data: {
-        catId,
+        category,
         profileId,
       },
     });
-    const category = await prisma.category.findUnique({
-      where: {
-        id: catId,
-      },
-      select: {
-        catName: true,
-      },
-    });
-    return res
-      .status(200)
-      .json({ message: "Categoray Added", category: category });
+    return res.status(200).json({ message: "Categoray Added", category: profileCategory.category });
   } catch (error) {
     logger.error(error);
     return res.status(500).json({ message: "server error" });
@@ -119,6 +109,16 @@ export const updateProfile = async (req: Request, res: Response) => {
 //PUBLIC PROFILE LISTING
 
 export const getProfilesList = async (req: Request, res: Response) => {
+  let platform=undefined;
+  let category=undefined;
+  let country=undefined;
+  let city=undefined;
+
+  if(req.params.platform) platform= req.params.platform
+  if(req.params.category) category= req.params.category
+  if(req.params.country) country= req.params.country
+  if(req.params.city) city= req.params.city
+
   try {
     const userList = await prisma.appUser.findMany({
       where: {
@@ -135,13 +135,8 @@ export const getProfilesList = async (req: Request, res: Response) => {
 
         Profile: {
           where: {
-            profilePlatform: {
-              none: {
-                id: {
-                  lt:0
-                }
-              },
-            },
+            country:country,
+            city:city
           },
           select: {
             id: true,
@@ -152,7 +147,7 @@ export const getProfilesList = async (req: Request, res: Response) => {
 
             profilePlatform: {
               where: {
-                platformName: "Instagram",
+                platformName: platform,
               },
               select: {
                 id: true,
@@ -162,9 +157,19 @@ export const getProfilesList = async (req: Request, res: Response) => {
             },
             profileCategory: {
               select: {
-                id: true,
+                category: true,
               },
             },
+            package:{
+              where:{
+                platformName:platform
+              },
+              select:{
+                id: true,
+                pkgPrice:true
+              }
+
+            }
           },
         },
       },
@@ -176,3 +181,40 @@ export const getProfilesList = async (req: Request, res: Response) => {
     return res.status(500).json({ error });
   }
 };
+
+export const getSellerProfile = (req:Request, res:Response)=>{
+
+  const {profileId} = req.body;
+
+  const sellerProfile = prisma.profile.findUnique({
+    where:{
+      id:profileId
+    },select: {
+      id: true,
+      avatar: true,
+      tagLine: true,
+      city: true,
+      country: true,
+
+      profilePlatform: {
+        select: {
+          id: true,
+          platformName: true,
+          profileLink: true,
+        },
+      },
+      profileCategory: {
+        select: {
+          category: true,
+        },
+      },
+      package:{
+        select:{
+          id: true,
+          pkgTitle:true,
+          pkgPrice:true
+        }
+      },
+    },
+  })
+}

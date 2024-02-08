@@ -55,17 +55,9 @@ CREATE TABLE "Profile" (
 );
 
 -- CreateTable
-CREATE TABLE "Category" (
-    "id" SERIAL NOT NULL,
-    "catName" TEXT NOT NULL,
-
-    CONSTRAINT "Category_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "profileCategory" (
     "id" SERIAL NOT NULL,
-    "catId" INTEGER NOT NULL,
+    "category" TEXT NOT NULL,
     "profileId" INTEGER NOT NULL,
 
     CONSTRAINT "profileCategory_pkey" PRIMARY KEY ("id")
@@ -117,12 +109,6 @@ CREATE UNIQUE INDEX "Profile_id_key" ON "Profile"("id");
 CREATE UNIQUE INDEX "Profile_userId_key" ON "Profile"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Category_id_key" ON "Category"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Category_catName_key" ON "Category"("catName");
-
--- CreateIndex
 CREATE UNIQUE INDEX "profileCategory_id_key" ON "profileCategory"("id");
 
 -- CreateIndex
@@ -136,9 +122,6 @@ ALTER TABLE "appUser" ADD CONSTRAINT "appUser_roleId_fkey" FOREIGN KEY ("roleId"
 
 -- AddForeignKey
 ALTER TABLE "Profile" ADD CONSTRAINT "Profile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "appUser"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "profileCategory" ADD CONSTRAINT "profileCategory_catId_fkey" FOREIGN KEY ("catId") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "profileCategory" ADD CONSTRAINT "profileCategory_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "Profile"("id") ON DELETE CASCADE ON UPDATE CASCADE;
