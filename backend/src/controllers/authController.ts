@@ -61,14 +61,14 @@ export const register = async (req: Request, res: Response): Promise<any> => {
       console.log(userType);
       switch (userType) {
         case "admin":
-          roleId = 0;
+          roleId = 1;
           isAdmin = true;
           break;
         case "buyer":
-          roleId = 1;
+          roleId = 2;
           break;
         case "seller":
-          roleId = 2;
+          roleId = 3;
           break;
 
         default:
@@ -91,10 +91,12 @@ export const register = async (req: Request, res: Response): Promise<any> => {
       });
 
       //Send E-MAIL
-      const emailVerificationURL = `localhost:3000/auth/verify?id=${token}`;
+      const emailVerificationURL = `${process.env.BASE_URL}/auth/verify?id=${token}`;
       emailService(email, emailVerificationURL);
       console.log(newUser);
-      return res.status(200).json({ message: "User Registered" });
+      return res
+        .status(200)
+        .json({ message: "User Registered", user: newUser });
     }
   } catch (error) {
     logger.error(`Database query error during user registration:${error}`);
@@ -156,7 +158,7 @@ export const login = async (req: Request, res: Response) => {
     } catch (error) {
       return res.status(400).json({ error });
     }
-    const user: appUser = await prisma.appUser.findUnique({
+    const user = await prisma.appUser.findUnique({
       where: {
         email: email,
       },
@@ -171,12 +173,13 @@ export const login = async (req: Request, res: Response) => {
       lastName: user.lastName,
       username: user.username,
       userType: user.userType,
+      emailVerified:user.emailVerified
     };
-    //GENERATE TOKEN
     const token = jwt.sign({ tokenData }, process.env.JWT_KEY);
+    //GENERATE TOKEN
     return res.status(200).json({
       token: token,
-      data: tokenData,
+      user: tokenData,
     });
   } catch (error) {
     console.log(error);
@@ -210,7 +213,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
     console.log(error);
   }
   const key = uuidv4();
-  const forgotPasswordUrl = `localhost/3000/forgot-password?key=${key}&token=${token}`;
+  const forgotPasswordUrl = `${process.env.BASE_URL}/forgot-password?key=${key}&token=${token}`;
   try {
     emailService(email, forgotPasswordUrl);
     return res.status(200).send("Email Sent");

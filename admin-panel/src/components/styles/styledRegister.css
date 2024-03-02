@@ -1,0 +1,80 @@
+*{
+    background-color: transparent;
+    box-sizing: border-box;
+}
+
+.register-container{
+    padding: 50px 100px;
+    width: 100vw;
+    margin-bottom: 50px;
+}
+
+.add-brand-btn{
+    margin-left: 10px;
+    width: 47px;
+    height: 47px;
+    border:1px solid lightgray;
+
+}
+
+.add-brand-icon{
+    color: black;
+    width: 20px;
+    height: 20px;
+}
+
+.list-box{
+    padding: 10px 10px;
+    border:1px solid lightgray;
+    width: 50vw;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+
+/*--------------------------------------------------------------
+# feature
+--------------------------------------------------------------*/
+.feature .icon-box {
+    box-shadow: 0px 0 25px 0 rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: all ease-in-out 0.4s;
+    background: #fff;
+  }
+  
+  .feature .icon-box .icon {
+    margin-bottom: 5px;
+    height: 60px;
+  }
+  
+  .feature .icon-box .icon i {
+    color: #47b2e4;
+    font-size: 48px;
+  }
+  
+  .feature .icon-box h4 {
+    font-weight: 500;
+    margin-bottom: 15px;
+    font-size: 24px;
+  }
+  
+  .feature .icon-box h4 a {
+    color: #37517e;
+    text-decoration: none;
+  }
+  
+  .feature .icon-box p {
+    line-height: 24px;
+    font-size: 14px;
+    margin-bottom: 0;
+  }
+  
+  .feature .icon-box:hover {
+    transform: translateY(-10px);
+  }
+  
+  .feature .icon-box:hover h4 a {
+    color: #47b2e4;
+  }
+  
