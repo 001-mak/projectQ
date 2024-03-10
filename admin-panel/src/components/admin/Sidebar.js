@@ -11,7 +11,7 @@ function Sidebar() {
     <>
       <div className="menu-container">
         <div className="menu">
-          {currentUser.verified && (
+          {currentUser.user.emailVerified && (
             <>
               {/* <div className="menu-option">
                 <Link to="/part-lv" className="side-menu-option"><FaPuzzlePiece className="menu-icon" />
@@ -36,7 +36,7 @@ function Sidebar() {
                   </div>
                 </>
               )} */}
-              {currentUser.role == Roles.Admin && (
+              {currentUser.user.userType == "admin" && (
                 <>
                   <div className="menu-option">
                     <Link to="/bookings" className="side-menu-option">{<FaCalendarCheck className="menu-icon" />}Bookings</Link>

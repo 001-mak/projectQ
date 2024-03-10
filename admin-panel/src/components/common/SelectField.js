@@ -47,7 +47,7 @@ function SelectField(FieldProps) {
                 isMulti={isMulti}
                 options={options}
                 onChange={option => {
-                    if (isMulti) {
+                    if (false) {
                         FieldProps.form.setFieldValue(FieldProps.field.name, option.map(x => x.value));
                     }
                     else {

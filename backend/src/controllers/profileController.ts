@@ -4,17 +4,17 @@ import prisma from "../../db/db";
 import logger from "../logs/winston";
 import imageservice from "../service/imageservice";
 
+export const uploadAvatar = async ()=>{
+
+}
+
 export const createProfile = async (req: Request, res: Response) => {
-  const { profileData } = req.body;
   try {
     //entry to profile table
     const profile = await prisma.profile.create({
-      data: profileData,
+      data: req.body,
     });
-
-    //upload avatar to uploads folder
-    imageservice(req.body.userId);
-
+    console.log(profile)
     return res.status(200).json({ message: "User Profile Created", profile });
   } catch (error) {
     logger.error(error);

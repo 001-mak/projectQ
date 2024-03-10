@@ -35,6 +35,8 @@ import BookingLV from "./components/admin/pages/bookings/booking-lv";
 import SystemConfigAE from "./components/admin/pages/systemconfigs/systemconfig-ae";
 import BookingView from "./components/admin/pages/bookings/booking-view";
 import VerifyEmail from "./components/admin/pages/verifyemail/VerifyEmail";
+import AddUser from "./components/admin/pages/users/AddUser";
+import UserProfile from "./components/admin/pages/users/UserProfile";
 
 function App() {
   const { user: currentUser } = useSelector((state) => state.auth);
@@ -108,6 +110,10 @@ function App() {
                   <Route path="/driverprofiles" element={<DriverProfileLV />} />
                   <Route path="/my-profile" element={<UserAE />} />
                   <Route path="/user-lv" element={<UsersLV />} />
+
+                  {/* Add user page new */}
+                  <Route path="/add-newuser" element={<AddUser />} />
+                  <Route path="/create-user-profile" element={<UserProfile/>} />
                 </Route>
               </Routes>
             </ScrollToTop>

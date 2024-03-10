@@ -9,7 +9,7 @@ export const isAuthenticated = (req:any, res:Response, next:NextFunction) => {
   const token = bearerHeader.split(" ")[1];
 
   jwt.verify(token, process.env.JWT_KEY, (err, user) => {
-    if (err) return res.status(403).send("Not Authorized");
+    if (err || !user) return res.status(403).send("Not Authorized");
     else{
       next();
     }

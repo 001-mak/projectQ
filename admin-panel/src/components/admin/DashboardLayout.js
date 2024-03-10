@@ -11,6 +11,7 @@ const DashboardLayout = (props) => {
   currentUser = currentUser.user
   const dispatch = useDispatch();
   
+
   // if (currentUser?.user.verified == "False") {
   //   apiService.get(`${process.env.baseUrl}/api/user/${currentUser.user.id}`,
   //   {
@@ -32,12 +33,8 @@ const DashboardLayout = (props) => {
   //     }
   //   });
   // }
-  useEffect(()=>{
-    console.log(currentUser.user.emailVerified)
-  },[])
   return (
     <>
-    <h3>Dashboard</h3>
     <div className="dashboard-container">
       {currentUser.user.emailVerified == true ? 
         <>
@@ -56,13 +53,13 @@ const DashboardLayout = (props) => {
         </>
       :
        (
-        <div class="container mt-2">
-          <div class="d-flex flex-column min-vh-50 justify-content-center align-items-center">
+        <div className="container mt-2">
+          <div className="d-flex flex-column min-vh-50 justify-content-center align-items-center">
             <section id="services" className="services">
               <div className="container" data-aos="fade-up">
 
                 <div className="section-title">
-                  <h2>Thanks for registing, Your profile is under review!</h2>
+                  <h2>Thanks for registering, Your profile is under review!</h2>
                   <img src="./under-review.jpg" width="500px" height="400px" />
                 </div>
 

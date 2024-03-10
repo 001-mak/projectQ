@@ -59,7 +59,7 @@ export const register = async (req: Request, res: Response): Promise<any> => {
         process.env.JWT_KEY
       );
       console.log(userType);
-      switch (userType) {
+      switch (userType.toLowerCase()) {
         case "admin":
           roleId = 1;
           isAdmin = true;

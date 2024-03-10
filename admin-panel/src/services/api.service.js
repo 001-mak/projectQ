@@ -32,13 +32,14 @@ const put = (url, body) => {
 };
 
 const get = (url, extra = {}) => {
-    return axios.get(baseURL + url, { ...extra,  headers: authHeader() }).then((response) => {
+    return axios.get(url, { ...extra,  headers: authHeader() }).then((response) => {
         return response;
     }).catch(err => {
-        if (err.response.status == 401) {
-            localStorage.removeItem("user");
-            window.location.href = '/';
-        }
+        return err;
+        // if (err.response.status == 401) {
+        //     localStorage.removeItem("user");
+        //     window.location.href = '/';
+        // }
     });
 };
 
@@ -52,7 +53,6 @@ const deleteCall = (url) => {
         }
     });
 };
-
 
 export default {
     get,

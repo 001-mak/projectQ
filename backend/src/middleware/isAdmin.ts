@@ -9,12 +9,12 @@ export const isAdmin = (req: any, res: Response, next: NextFunction) => {
   const token = bearerHeader.split(" ")[1];
 
   jwt.verify(token, process.env.JWT_KEY, (err, user) => {
+    console.log(user.tokenData);
     if (err) return res.status(403).send("Not Authorized");
-    console.log(user)
-    if (user.userType == "admin"){
-      next();
-    }
-    else{
+    if (user.tokenData.userType == "admin") {
+      console.log("ok, admin found");
+      return next();
+    } else {
       return res.status(403).json({ message: "Access Forbidden" });
     }
   });

@@ -9,8 +9,11 @@ import BSForm from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import DataTable from "react-data-table-component";
 import apiService from "../../services/api.service";
+import { useSelector } from "react-redux";
+
 
 const PaginatedTable = forwardRef((TableProps, ref) => {
+    const {user: currentUser} = useSelector(state => state.auth)
     const { title, pagedAPIEndpoint, deleteEndpoint, showAdd, showDelete, showEdit, addEditComponentRoute, extraColumns, showView, viewComponentRoute, searchForm, children } = TableProps;
 
     const navigate = useNavigate();
@@ -28,12 +31,22 @@ const PaginatedTable = forwardRef((TableProps, ref) => {
     const [orderBy, setOrderBy] = useState(null);
     const [ascending, setAscending] = useState(true);
 
-    const getData = (searchText = "", page = 1, pageSize = 10, orderByColumn = null, asc = true, searchFilters= null) => {
+    const getData = async (searchText = "", page = 1, pageSize = 10, orderByColumn = null, asc = true, searchFilters= null) => {
         setLoading(true);
-        apiService.get(pagedAPIEndpoint, { params: { searchText, page, pageSize, orderBy: orderByColumn, ascending: asc, ...searchFilters } }).then(response => {
-            console.log(response)
-            setData(response.data.data);
-            setTotalRows(response.data.totalCount);
+
+        //test******
+        // await axios.get("http://localhost:5000/api/users",{
+        //     headers: {
+        //               'authorization': `bearer ${currentUser.token}`,
+        //               // Other headers...
+        //             }
+        // }).then((response)=>{console.log(response.data)})
+         
+
+        apiService.get("http://localhost:5000/api/users", { params: { searchText, page, pageSize, orderBy: orderByColumn, ascending: asc, ...searchFilters } }).then(response => {
+            console.log(response.data)
+            setData(response.data);
+            setTotalRows(10);
             setSearchedText(searchText);
             setSearchInput("");
             setLoading(false);
@@ -106,6 +119,7 @@ const PaginatedTable = forwardRef((TableProps, ref) => {
 
     useEffect(() => {
         console.log("table")
+        console.log(currentUser.token)
         getData();
     }, []);
 
@@ -138,7 +152,6 @@ const PaginatedTable = forwardRef((TableProps, ref) => {
 
     return (
         <>
-        <h2>table</h2>
             <div className="row mb-3">
                 <div className="col-md-4">
                     {showAdd && (

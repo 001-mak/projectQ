@@ -24,7 +24,7 @@ function UsersLV(user) {
             name:"Email",
         },
         {
-            selector: row => row.roleName,
+            selector: row => row.userType,
             name:"Role",
         },
     ];
@@ -32,17 +32,14 @@ function UsersLV(user) {
     if (!user) {
         navigate('/');
     }
-    const apiURL = `${process.env.baseURL}/users`
     return (
         <>
-        <h1>users</h1>
-        <DashboardLayout title="Users">
-            <h3>dashboard</h3>
+        <DashboardLayout>
             <PaginatedTable
                 title="Users"
                 extraColumns={extraColumns}
-                pagedAPIEndpoint=""
-                deleteEndpoint={apiURL}
+                pagedAPIEndpoint="http://localhost:5000/api/users"
+                deleteEndpoint=""
                 showAdd={true}
                 showDelete={true}
                 showEdit={true}
